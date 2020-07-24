@@ -1,2 +1,2 @@
 # TicTacToe
-implement 2 player TicTacToe game
+Please read ReadMe file for understanding class design
