@@ -1,0 +1,86 @@
+Classes of the application with attributes & methods (apart from typical setter, getter, equals & hashCode):
+
+Board
+    attributes:
+	Block[][] blocks
+	List<Block> emptyBlocks     -> variable to easily determine next Block for AI implementation
+
+    methods:
+	addMove(block)
+	getBlock(location)
+	getSide(location)
+	display()
+
+Block
+    attributes:
+	Location
+	Side
+
+    methods:
+	display()
+
+Location
+    attributes:
+	row
+	column
+
+Side                         -> enum which has values & a corresponding string: CROSS(X),OVAL(O),UNDEFINED(-)
+
+Player                      -> this is an abstract class, every class will need to implement getMove(Board) method
+    attributes:
+	Side
+
+	methods:
+	abstract Block getMove(Board)
+
+HumanPlayer                 -> the concrete implementation which takes input from console
+AIPlayer & AIPlayer2        -> 2 concrete implementations implementing dumb logics to determine next move
+
+
+Game                        ->this is the central class, it knows high level logic of the game, delegates low level logic to different attributes
+    attributes:
+	board
+	List<Player> players
+	moveSaver
+	turnCoordinator
+	moveValidator
+	endDeterminer
+
+	methods:
+	play()
+	getWinnerSide()
+	getWinner()
+
+
+
+MoveSaver                   -> wrapper class to save moves for a game in db
+    attributes:
+	List<Block> moves
+
+	saveMove(Block)
+	getMoves()
+	getLastMove()
+
+TurnCoordinator             -> Class to co-ordinate turns in game
+	attributes:
+	List<Player> players
+	int currentPlayerIndex
+
+    methods:
+	getCurrentPlayer()
+	changeTurn()
+
+
+MoveValidator               -> Class with validate move logic
+	isValidMove(Board, Block)
+	isValidLocation(location)
+
+SideAllocator               -> This class tosses coins & randomly assigns 1st & 2nd player
+    allocateSides(List<Player> players)
+
+EndDeterminer               -> Class with logic for determining game end & game winner
+
+	isGameOver(Board, lastBlock)
+	getWinnerSide(Board, lastBlock)
+
+Main                        -> Driver class which creates constructor arguments for Game object (dependency inversion), calls it's play() method & then it's getWinnerSide() method
